@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Find verified PG accommodations in Chennai. Search by area, budget, and gender preference." />
+  <title>PG Finder Chennai — Find Your Perfect PG</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">PG<span>Finder</span><span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="pages/listings.html">Browse PGs</a></li>
+    <li><a href="pages/areas.html">Areas</a></li>
+    <li><a href="pages/contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openListModal()">+ List Your PG</button>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── MOBILE MENU ── -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="modal-close mobile-close" id="mobile-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="pages/listings.html">Browse PGs</a>
+  <a href="pages/areas.html">Areas</a>
+  <a href="pages/contact.html">Contact</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-tag"><span class="pulse-dot"></span> Chennai's #1 PG Platform</div>
+  <h1>Find Your Perfect<br><span class="highlight">PG in Chennai</span></h1>
+  <p class="hero-sub">Search verified PG accommodations across 28 areas of Chennai. Filter by location, budget, and gender — move in with confidence.</p>
+
+  <!-- Search Card -->
+  <div class="search-card">
+    <div class="row">
+      <div class="search-field">
+        <label>📍 Location</label>
+        <select id="s-loc">
+          <option value="">All Areas</option>
+          <option>Anna Nagar</option>
+          <option>T. Nagar</option>
+          <option>Velachery</option>
+          <option>OMR</option>
+          <option>Adyar</option>
+          <option>Porur</option>
+          <option>Tambaram</option>
+          <option>Mylapore</option>
+          <option>Sholinganallur</option>
+          <option>Guindy</option>
+          <option>Kodambakkam</option>
+          <option>Chromepet</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>💰 Max Budget</label>
+        <select id="s-price">
+          <option value="">Any Budget</option>
+          <option value="5000">Under ₹5,000</option>
+          <option value="7000">Under ₹7,000</option>
+          <option value="9000">Under ₹9,000</option>
+          <option value="12000">Under ₹12,000</option>
+          <option value="15000">Under ₹15,000</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>👤 Gender</label>
+        <select id="s-gender">
+          <option value="">Any</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <button class="btn-search" onclick="applySearch()">Search PGs</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num" data-target="1240" data-suffix="+">0</div>
+    <div class="stat-label">Verified PGs</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="30">0</div>
+    <div class="stat-label">Chennai Areas</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="8500" data-suffix="+">0</div>
+    <div class="stat-label">Happy Tenants</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">4.8 ★</div>
+    <div class="stat-label">Avg Rating</div>
+  </div>
+</div>
+
+<!-- ── LISTINGS ── -->
+<section class="section" id="listings">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Featured <span>PGs</span></h2>
+      <p class="section-sub">Verified and reviewed by real tenants</p>
+    </div>
+    <a href="pages/listings.html" class="see-all">View All PGs →</a>
+  </div>
+
+  <!-- Filter Pills -->
+  <div class="filter-row">
+    <button class="pill active" data-gender="" onclick="setGenderFilter(this, '')">All</button>
+    <button class="pill" data-gender="Male" onclick="setGenderFilter(this, 'Male')">Male</button>
+    <button class="pill" data-gender="Female" onclick="setGenderFilter(this, 'Female')">Female</button>
+    <button class="pill" data-gender="Any" onclick="setGenderFilter(this, 'Any')">Mixed</button>
+    <button class="pill" data-type="" onclick="setTypeFilter(this, '')">All Types</button>
+    <button class="pill" data-type="Budget" onclick="setTypeFilter(this, 'Budget')">Budget</button>
+    <button class="pill" data-type="Standard" onclick="setTypeFilter(this, 'Standard')">Standard</button>
+    <button class="pill" data-type="Premium" onclick="setTypeFilter(this, 'Premium')">Premium</button>
+  </div>
+
+  <div class="cards-grid" id="listings-grid"></div>
+</section>
+
+<!-- ── AREAS ── -->
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Browse by <span>Area</span></h2>
+      <p class="section-sub">PGs in all major Chennai localities</p>
+    </div>
+  </div>
+  <div class="areas-grid" id="areas-grid"></div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">How It <span>Works</span></h2>
+      <p class="section-sub">Find a PG in 3 simple steps</p>
+    </div>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">Search & Filter</div>
+      <p class="step-desc">Use our smart search to filter PGs by area, budget, gender preference, and amenities.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">View & Compare</div>
+      <p class="step-desc">Browse verified listings with photos, amenities, owner details, and real tenant reviews.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title">Contact Owner</div>
+      <p class="step-desc">Directly enquire or WhatsApp the owner. No middlemen, no brokerage fees.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-title">Move In</div>
+      <p class="step-desc">Visit the PG, finalize the deal, and move in on your preferred date. That's it!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">What Tenants <span>Say</span></h2>
+      <p class="section-sub">Real reviews from real residents</p>
+    </div>
+  </div>
+  <div class="testimonials-grid" id="testi-grid"></div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-banner">
+  <h2>Own a PG in Chennai?</h2>
+  <p>List your PG for free and reach thousands of verified seekers every day.</p>
+  <button class="btn-primary" onclick="openListModal()">List Your PG — It's Free</button>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">PG<span>Finder</span><span class="dot">.</span></div>
+      <p>Chennai's most trusted platform to discover verified PG accommodations. Helping thousands find their home away from home.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Browse</h4>
+      <ul>
+        <li><a href="pages/listings.html">All PGs</a></li>
+        <li><a href="pages/listings.html">Male PGs</a></li>
+        <li><a href="pages/listings.html">Female PGs</a></li>
+        <li><a href="pages/listings.html">Budget PGs</a></li>
+        <li><a href="pages/listings.html">Premium PGs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Areas</h4>
+      <ul>
+        <li><a href="#">Anna Nagar</a></li>
+        <li><a href="#">T. Nagar</a></li>
+        <li><a href="#">Velachery</a></li>
+        <li><a href="#">OMR</a></li>
+        <li><a href="#">Adyar</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="pages/contact.html">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">List Your PG</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 PGFinder Chennai. All rights reserved.</span>
+    <span>Made with ❤️ in Chennai, Tamil Nadu</span>
+  </div>
+</footer>
+
+<!-- ── MODAL: PG DETAIL ── -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal-box" style="max-width:540px">
+    <button class="modal-close" onclick="closeDetailModal()">✕</button>
+    <div id="modal-detail-content"></div>
+  </div>
+</div>
+
+<!-- ── MODAL: ENQUIRE ── -->
+<div class="modal-overlay" id="modal-enquire">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEnquireModal()">✕</button>
+    <div class="modal-title">Send Enquiry</div>
+    <div class="modal-sub" id="enquire-pg-name"></div>
+    <input type="hidden" id="enquire-pg-id" />
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Your Name *</label>
+        <input type="text" id="eq-name" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="tel" id="eq-phone" placeholder="10-digit number" maxlength="10" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email (Optional)</label>
+      <input type="email" id="eq-email" placeholder="your@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Move-in Date</label>
+      <input type="date" id="eq-date" />
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea id="eq-msg" placeholder="Any specific requirements..."></textarea>
+    </div>
+    <button class="btn-submit" onclick="submitEnquiry()">Send Enquiry →</button>
+  </div>
+</div>
+
+<!-- ── MODAL: LIST PG ── -->
+<div class="modal-overlay" id="modal-list">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeListModal()">✕</button>
+    <div class="modal-title">List Your PG</div>
+    <div class="modal-sub">Free listing · Reach 10,000+ seekers monthly</div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>PG Name *</label>
+        <input type="text" id="list-pg-name" placeholder="e.g. Sri Lakshmi PG" />
+      </div>
+      <div class="form-group">
+        <label>Owner Name *</label>
+        <input type="text" id="list-owner" placeholder="Your full name" />
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Area *</label>
+        <select id="list-area">
+          <option value="">Select Area</option>
+          <option>Anna Nagar</option><option>T. Nagar</option><option>Velachery</option>
+          <option>OMR</option><option>Adyar</option><option>Porur</option>
+          <option>Tambaram</option><option>Mylapore</option><option>Sholinganallur</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select id="list-gender">
+          <option>Male</option><option>Female</option><option>Any</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Monthly Rent (₹) *</label>
+        <input type="number" id="list-rent" placeholder="e.g. 7500" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="tel" id="list-phone" placeholder="10-digit number" maxlength="10" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" id="list-address" placeholder="Full address" />
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="list-desc" placeholder="Describe your PG, amenities, rules..."></textarea>
+    </div>
+    <button class="btn-submit" onclick="submitListing()">Submit Listing →</button>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<!-- ── SCRIPTS ── -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

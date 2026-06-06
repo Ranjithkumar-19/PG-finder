@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse PGs — PG Finder Chennai</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/listings.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="../index.html" class="nav-logo">PG<span>Finder</span><span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="listings.html" class="active">Browse PGs</a></li>
+    <li><a href="areas.html">Areas</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openListModal()">+ List Your PG</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="modal-close mobile-close" id="mobile-close">✕</button>
+  <a href="../index.html">Home</a>
+  <a href="listings.html">Browse PGs</a>
+  <a href="areas.html">Areas</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1 class="page-title">Browse All <span>PGs</span></h1>
+  <p class="page-sub">Showing <span id="result-count">9</span> verified PGs in Chennai</p>
+</div>
+
+<!-- LAYOUT -->
+<div class="listings-layout">
+
+  <!-- SIDEBAR FILTERS -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Filters</div>
+      <button class="reset-btn" onclick="resetFilters()">Reset All</button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Location</div>
+      <select class="sidebar-select" id="f-loc" onchange="runFilter()">
+        <option value="">All Areas</option>
+        <option>Anna Nagar</option>
+        <option>T. Nagar</option>
+        <option>Velachery</option>
+        <option>OMR</option>
+        <option>Adyar</option>
+        <option>Porur</option>
+        <option>Tambaram</option>
+        <option>Mylapore</option>
+        <option>Sholinganallur</option>
+      </select>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Max Budget</div>
+      <input type="range" id="f-price" min="3000" max="15000" step="500" value="15000" oninput="updatePriceLabel(this.value); runFilter()" class="price-slider" />
+      <div class="price-label">Up to ₹<span id="price-display">15,000</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Gender</div>
+      <div class="check-group">
+        <label class="check-item"><input type="radio" name="gender" value="" onchange="runFilter()" checked /> Any</label>
+        <label class="check-item"><input type="radio" name="gender" value="Male" onchange="runFilter()" /> Male</label>
+        <label class="check-item"><input type="radio" name="gender" value="Female" onchange="runFilter()" /> Female</label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">PG Type</div>
+      <div class="check-group">
+        <label class="check-item"><input type="checkbox" value="Budget" onchange="runFilter()" class="type-cb" /> Budget</label>
+        <label class="check-item"><input type="checkbox" value="Standard" onchange="runFilter()" class="type-cb" /> Standard</label>
+        <label class="check-item"><input type="checkbox" value="Premium" onchange="runFilter()" class="type-cb" /> Premium</label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Amenities</div>
+      <div class="check-group">
+        <label class="check-item"><input type="checkbox" value="WiFi" onchange="runFilter()" class="amenity-cb" /> WiFi</label>
+        <label class="check-item"><input type="checkbox" value="AC" onchange="runFilter()" class="amenity-cb" /> AC</label>
+        <label class="check-item"><input type="checkbox" value="Food" onchange="runFilter()" class="amenity-cb" /> Food</label>
+        <label class="check-item"><input type="checkbox" value="Gym" onchange="runFilter()" class="amenity-cb" /> Gym</label>
+        <label class="check-item"><input type="checkbox" value="Laundry" onchange="runFilter()" class="amenity-cb" /> Laundry</label>
+        <label class="check-item"><input type="checkbox" value="Parking" onchange="runFilter()" class="amenity-cb" /> Parking</label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Availability</div>
+      <div class="check-group">
+        <label class="check-item"><input type="radio" name="avail" value="" onchange="runFilter()" checked /> All</label>
+        <label class="check-item"><input type="radio" name="avail" value="true" onchange="runFilter()" /> Available Only</label>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="listings-main">
+    <div class="sort-bar">
+      <span id="active-filters"></span>
+      <select id="sort-select" onchange="runFilter()" class="sort-select">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+      </select>
+    </div>
+    <div class="cards-grid" id="listings-grid"></div>
+  </main>
+</div>
+
+<!-- MODALS (same as index) -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal-box" style="max-width:540px">
+    <button class="modal-close" onclick="closeDetailModal()">✕</button>
+    <div id="modal-detail-content"></div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-enquire">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEnquireModal()">✕</button>
+    <div class="modal-title">Send Enquiry</div>
+    <div class="modal-sub" id="enquire-pg-name"></div>
+    <input type="hidden" id="enquire-pg-id" />
+    <div class="form-row-2">
+      <div class="form-group"><label>Your Name *</label><input type="text" id="eq-name" placeholder="Full name" /></div>
+      <div class="form-group"><label>Phone *</label><input type="tel" id="eq-phone" placeholder="10-digit" maxlength="10" /></div>
+    </div>
+    <div class="form-group"><label>Email</label><input type="email" id="eq-email" placeholder="your@email.com" /></div>
+    <div class="form-group"><label>Move-in Date</label><input type="date" id="eq-date" /></div>
+    <div class="form-group"><label>Message</label><textarea id="eq-msg" placeholder="Any requirements..."></textarea></div>
+    <button class="btn-submit" onclick="submitEnquiry()">Send Enquiry →</button>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-list">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeListModal()">✕</button>
+    <div class="modal-title">List Your PG</div>
+    <div class="modal-sub">Free listing · Reach 10,000+ seekers</div>
+    <div class="form-row-2">
+      <div class="form-group"><label>PG Name *</label><input type="text" id="list-pg-name" placeholder="PG name" /></div>
+      <div class="form-group"><label>Owner Name *</label><input type="text" id="list-owner" placeholder="Your name" /></div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group"><label>Area *</label><select id="list-area"><option>Anna Nagar</option><option>T. Nagar</option><option>OMR</option><option>Velachery</option></select></div>
+      <div class="form-group"><label>Gender</label><select id="list-gender"><option>Male</option><option>Female</option><option>Any</option></select></div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group"><label>Rent (₹) *</label><input type="number" id="list-rent" placeholder="e.g. 7500" /></div>
+      <div class="form-group"><label>Phone *</label><input type="tel" id="list-phone" maxlength="10" placeholder="10-digit" /></div>
+    </div>
+    <button class="btn-submit" onclick="submitListing()">Submit →</button>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  function updatePriceLabel(val) {
+    document.getElementById("price-display").textContent = parseInt(val).toLocaleString();
+  }
+
+  function runFilter() {
+    const loc    = document.getElementById("f-loc").value;
+    const price  = parseInt(document.getElementById("f-price").value);
+    const gender = document.querySelector('input[name="gender"]:checked').value;
+    const avail  = document.querySelector('input[name="avail"]:checked').value;
+    const types  = [...document.querySelectorAll(".type-cb:checked")].map(c => c.value);
+    const amens  = [...document.querySelectorAll(".amenity-cb:checked")].map(c => c.value);
+    const sort   = document.getElementById("sort-select").value;
+
+    let result = PG_DATA.filter(pg => {
+      if (loc    && pg.area !== loc) return false;
+      if (pg.price > price) return false;
+      if (gender && pg.gender !== gender && pg.gender !== "Any") return false;
+      if (avail  && !pg.available) return false;
+      if (types.length && !types.includes(pg.type)) return false;
+      if (amens.length && !amens.every(a => pg.amenities.includes(a))) return false;
+      return true;
+    });
+
+    if (sort === "price-asc")  result.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") result.sort((a, b) => b.price - a.price);
+    if (sort === "rating")     result.sort((a, b) => b.rating - a.rating);
+
+    document.getElementById("result-count").textContent = result.length;
+    renderCards(result);
+
+    const active = [];
+    if (loc)          active.push(loc);
+    if (price < 15000) active.push(`≤₹${price.toLocaleString()}`);
+    if (gender)       active.push(gender);
+    if (types.length) active.push(...types);
+    document.getElementById("active-filters").textContent = active.length ? "Filters: " + active.join(" · ") : "";
+  }
+
+  function resetFilters() {
+    document.getElementById("f-loc").value = "";
+    document.getElementById("f-price").value = 15000;
+    document.getElementById("price-display").textContent = "15,000";
+    document.querySelector('input[name="gender"][value=""]').checked = true;
+    document.querySelector('input[name="avail"][value=""]').checked = true;
+    document.querySelectorAll(".type-cb, .amenity-cb").forEach(c => c.checked = false);
+    document.getElementById("sort-select").value = "default";
+    runFilter();
+  }
+
+  runFilter();
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse by Area — PG Finder Chennai</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" class="nav-logo">PG<span>Finder</span><span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="listings.html">Browse PGs</a></li>
+    <li><a href="areas.html" class="active">Areas</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openListModal()">+ List Your PG</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="modal-close mobile-close" id="mobile-close">✕</button>
+  <a href="../index.html">Home</a><a href="listings.html">Browse PGs</a>
+  <a href="areas.html">Areas</a><a href="contact.html">Contact</a>
+</div>
+
+<div style="padding:3rem 2rem 2rem;text-align:center;background:var(--bg-2);border-bottom:1px solid var(--border)">
+  <h1 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--text)">PGs by <span style="color:var(--gold)">Area</span></h1>
+  <p style="color:var(--text-2);margin-top:8px">Click any area to view all available PGs</p>
+</div>
+
+<section class="section">
+  <div id="areas-big-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px"></div>
+</section>
+
+<div class="modal-overlay" id="modal-list">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeListModal()">✕</button>
+    <div class="modal-title">List Your PG</div>
+    <div class="form-group"><label>PG Name *</label><input type="text" id="list-pg-name" /></div>
+    <div class="form-group"><label>Owner *</label><input type="text" id="list-owner" /></div>
+    <div class="form-group"><label>Phone *</label><input type="tel" id="list-phone" maxlength="10" /></div>
+    <button class="btn-submit" onclick="submitListing()">Submit →</button>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  const grid = document.getElementById("areas-big-grid");
+  grid.innerHTML = AREAS.map(a => `
+    <div class="area-card" style="padding:2.5rem 1.5rem" onclick="window.location.href='listings.html?area=${encodeURIComponent(a.name)}'">
+      <div class="area-icon" style="font-size:40px;margin-bottom:14px">${a.emoji}</div>
+      <div class="area-name" style="font-size:17px;font-family:var(--font-display);font-weight:700">${a.name}</div>
+      <div class="area-count" style="margin-top:6px;font-size:13px">${a.count} PGs Available</div>
+    </div>`).join("");
+
+  initScrollReveal();
+</script>
+</body>
+</html>
